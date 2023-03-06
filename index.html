@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script defer src="js/vue.js"></script>
+    <script src="js/vue.js"></script>
     <script defer src="js/main.js"></script>
     <link rel="stylesheet" href="css/main.css">
     <title>Product App</title>
@@ -19,13 +19,12 @@
         </div>
 
         <div class="product-info">
-            <h1>{{ product }}</h1>
+            <h1>{{ product }} <span v-show="onSale">!On Sale!</span></h1>
             <p>{{description}}</p>
 
-            <p v-if="inStock">In Stock</p>
-            <p v-else-if="!inStock">Out of Stock</p>
-
-
+            <p v-if="inventory > 10">In stock</p>
+            <p v-else-if="inventory <= 10 && inventory > 0">Almost sold out!</p>
+            <p v-else>Out of stock</p>
 
             <a :href="link">More products like this</a>
         </div>

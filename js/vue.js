@@ -11048,7 +11048,7 @@
         if (condition.exp) {
             return "(".concat(condition.exp, ")?").concat(genTernaryExp(condition.block), ":").concat(genIfConditions(conditions, state, altGen, altEmpty));
         }
-        else {new_file
+        else {
             return "".concat(genTernaryExp(condition.block));
         }
         // v-if with v-once should generate code like (a)?_m(0):_m(1)
