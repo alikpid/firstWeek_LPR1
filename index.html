@@ -19,7 +19,7 @@
         </div>
 
         <div class="product-info">
-            <h1>{{ product }} <span v-show="onSale">!On Sale!</span></h1>
+            <h1>{{ title }} <span v-show="onSale">¡On Sale!</span></h1>
             <p>{{description}}</p>
 
             <p v-if="inventory <= 10 && inventory > 0">Almost sold out!</p>
@@ -42,10 +42,10 @@
 
             <div class="colors">
                 <div class="color-box"
-                     v-for="variant in variants"
+                     v-for="(variant, index) in variants"
                      :key="variant.variantId"
                      :style="{ backgroundColor:variant.variantColor }"
-                     @mouseover="updateProduct(variant.variantImage)"
+                     @mouseover="updateProduct(index)"
                 >
                 </div>
             </div>
