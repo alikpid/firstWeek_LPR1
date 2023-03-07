@@ -19,6 +19,9 @@ Vue.component('product', {
         premium: {
             type: Boolean,
             required: true
+        },
+        cart: {
+            type: Array
         }
     },
     template: `
@@ -64,11 +67,7 @@ Vue.component('product', {
             >
                 Add to cart
             </button>
-            <button class="removeFromCart" v-show="cart!=0" v-on:click="removeFromCart">Remove</button>
-
-            <div class="cart">
-                <p>Cart({{ cart }})</p>
-            </div>
+            <button class="removeFromCart" v-show="cart.length != 0" v-on:click="removeFromCart">Remove</button>
 
         </div>
    </div>
@@ -94,26 +93,27 @@ Vue.component('product', {
                     variantId: 2235,
                     variantColor: 'blue',
                     variantImage: "./assets/vmSocks-blue-onWhite.jpg",
-                    variantQuantity: 0,
+                    variantQuantity: 1,
                     onSale:  false
                 }
             ],
             sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-            cart: 0,
         }
     },
     methods: {
         addToCart() {
-            this.cart += 1
+            this.$emit('add-to-cart',
+            this.variants[this.selectedVariant].variantId);
         },
         removeFromCart() {
-            if (this.cart !== 0)
-                this.cart -= 1
+            this.$emit('remove-from-cart',
+            this.variants[this.selectedVariant].variantId);
         },
         updateProduct(index) {
             this.selectedVariant = index;
             console.log(index);
-        }
+        },
+
     },
     computed: {
         title() {
@@ -144,7 +144,23 @@ Vue.component('product', {
 let app = new Vue({
     el: '#app',
     data: {
-        premium: true
+        premium: true,
+        cart: [],
+    },
+    methods: {
+        addToCart(id) {
+            this.cart.push(id);
+        },
+        removeFromCart(id) {
+            for(let i = this.cart.length - 1; i >= 0; --i){
+                if (this.cart[i] === id){
+                    this.cart.splice(i, 1);
+                }
+
+            }
+
+        }
     }
+
 })
 
