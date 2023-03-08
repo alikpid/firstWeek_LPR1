@@ -76,6 +76,7 @@ button {
 input {
     width: 100%;
     height: 25px;
+    font-size: 17px;
 }
 .radioInput{
     width: 25%;
@@ -89,6 +90,8 @@ textarea {
     width: 100%;
     height: 60px;
     resize: none;
+    font-size: 17px;
+
 }
 
 .tab {

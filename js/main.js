@@ -204,8 +204,8 @@ Vue.component('product', {
             <p v-else-if="inStock <= 10 && inStock > 0">Almost sold out!</p>
             <p v-else>In stock</p>
 
-            <product-info-tabs :shipping="shipping" :details="details" :sizes="sizes"></product-info-tabs>
-
+            <product-info-tabs :shipping="shipping" :sizes="sizes"></product-info-tabs>
+            
             <div class="colors">
                 <div class="color-box"
                      v-for="(variant, index) in variants"
