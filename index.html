@@ -12,10 +12,11 @@
 </head>
 <body>
 <div id="app">
+    <div class="nav-bar"></div>
     <div class="cart">
         <p>Cart({{ cart.length }})</p>
     </div>
-    <product :premium="premium" :cart="cart" @add-to-cart="addToCart" @remove-from-cart="removeFromCart"></product> <!-- сюда такж как и с премиум через пропс передать cart[] и логика кнопки удаления сохранится-->
+    <product :premium="premium" :cart="cart" @add-to-cart="addToCart" @remove-from-cart="removeFromCart"></product>
 </div>
 </body>
 </html>

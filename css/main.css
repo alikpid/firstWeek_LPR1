@@ -1,9 +1,9 @@
 body {
     font-family: tahoma;
     color:#282828;
-    margin: 0px;
+    margin: 0;
 }
-span{
+.saleSpan{
     font-weight: normal;
     color: crimson;
 }
@@ -69,7 +69,7 @@ button {
 .review-form {
     width: 400px;
     padding: 20px;
-    margin: 40px;
+    margin-top: 40px;
     border: 1px solid #d8d8d8;
 }
 
@@ -92,11 +92,20 @@ textarea {
 }
 
 .tab {
-    margin-left: 20px;
+    margin-right: 20px;
     cursor: pointer;
 }
 
 .activeTab {
     color: #16C0B0;
     text-decoration: underline;
+}
+ul{
+    padding-left: 0;
+}
+li{
+    margin-left: 20px;
+}
+.reviewTab{
+    margin-left: 2.4rem;
 }
