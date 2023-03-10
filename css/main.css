@@ -13,7 +13,7 @@ body {
     margin-bottom: 15px;
 }
 
-.product {
+.product, .product-next {
     display: flex;
     flex-flow: wrap;
     padding: 1rem;
@@ -26,8 +26,8 @@ img {
     box-shadow: 0 .5px 1px #d8d8d8;
 }
 
-.product-image {
-    width: 80%;
+.product-image, .product-image-next{
+    width: 45%;
 }
 
 .product-image,
@@ -38,7 +38,8 @@ img {
 .colors{
     display: flex;
 }
-.color-box {
+.color-box, .color-box-next {
+    border: 1px solid black;
     width: 40px;
     height: 40px;
     margin: 0 5px 0 5px;

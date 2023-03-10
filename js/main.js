@@ -15,6 +15,21 @@ Vue.component('product-details', {
     },
 })
 
+Vue.component('product-next-details', {
+    template: `
+   <div class="product-next-details">
+       <ul>
+           <li v-for="detail in details">{{ detail }}</li>
+       </ul>
+   </div>
+ `,
+    data() {
+        return {
+            details: ['100% polyester', 'Male'],
+        }
+    },
+})
+
 Vue.component('product-review', {
     template: `
        <form class="review-form" @submit.prevent="onSubmit">
@@ -185,7 +200,7 @@ Vue.component('product', {
         },
         cart: {
             type: Array
-        }
+        },
     },
     template: `
    <div class="product">
@@ -272,6 +287,178 @@ Vue.component('product', {
         removeFromCart() {
             this.$emit('remove-from-cart',
             this.variants[this.selectedVariant].variantId);
+        },
+        updateProduct(index) {
+            this.selectedVariant = index;
+            console.log(index);
+        },
+    },
+    mounted() {
+        eventBus.$on('review-submitted', productReview => {
+            this.reviews.push(productReview)
+        })
+    },
+    computed: {
+        title() {
+            return this.brand + ' ' + this.product;
+        },
+        image() {
+            return this.variants[this.selectedVariant].variantImage;
+        },
+        inStock(){
+            return this.variants[this.selectedVariant].variantQuantity;
+        },
+        sale() {
+            return this.variants[this.selectedVariant].onSale;
+        },
+        shipping() {
+            if (this.premium) {
+                return "Free";
+            } else {
+                return 2.99
+            }
+        }
+
+    }
+})
+
+Vue.component('product-next-info-tabs', {
+    props: {
+        shipping: {
+            required: true
+        },
+        sizes: {
+            type: Array,
+            required: true
+        }
+    },
+    template: `
+      <div>
+        <ul>
+          <span class="tab" 
+                :class="{ activeTab: selectedTab === tab }"
+                v-for="(tab, index) in tabs"
+                @click="selectedTab = tab"
+                :key="tab"
+          >{{ tab }}</span>
+        </ul>
+        <div v-show="selectedTab === 'Shipping'">
+          <p>{{ shipping }}</p>
+        </div>
+        <div v-show="selectedTab === 'Details'">
+            <product-next-details></product-next-details>
+        </div>
+        <div v-show="selectedTab === 'Sizes'">
+            <ul>
+                <li v-for="size in sizes">{{ size }}</li>
+            </ul>
+        </div>  
+    
+      </div>
+    `,
+    data() {
+        return {
+            tabs: ['Shipping', 'Details', 'Sizes'],
+            selectedTab: 'Shipping'
+        }
+    }
+})
+
+Vue.component('product-next', {
+    props: {
+        premium: {
+            type: Boolean,
+            required: true
+        },
+        cart: {
+            type: Array
+        },
+    },
+    template: `
+    <div class="product-next">
+        <div class="product-image-next">
+            <img :src="image" :alt="altText"/>
+        </div>
+
+        <div class="product-info">
+            <h1>{{ title }} <span class="saleSpan" v-show="sale">¡Sale!</span></h1>
+            <p>{{description}}</p>
+
+            <p v-if="!inStock"
+               v-bind:class="{ notActive: !inStock }"
+               :style="{ textDecorationLine: 'line-through'}"
+            >Out of stock</p>
+            <p v-else-if="inStock <= 10 && inStock > 0">Almost sold out!</p>
+            <p v-else>In stock</p>
+
+            <product-next-info-tabs :shipping="shipping" :sizes="sizes"></product-next-info-tabs>
+            
+            <div class="colors">
+                <div class="color-box-next"
+                     v-for="(variant, index) in variants"
+                     :key="variant.variantId"
+                     :style="{ backgroundColor:variant.variantColor }"
+                     @mouseover="updateProduct(index)"
+                >
+                </div>
+            </div>
+            
+            <p>
+            <a :href="link">More products like this</a>
+            </p>
+            
+            <button v-on:click="addToCart"
+                    :disabled="!inStock"
+                    :class="{ disabledButton: !inStock }"
+            >
+                Add to cart
+            </button>
+            <button class="removeFromCart" v-show="this.cart.length" v-on:click="removeFromCart">Remove</button>
+            
+            
+        </div>
+            <div>
+                <product-review-tabs :reviews="reviews"></product-review-tabs> 
+            </div>       
+   </div>
+   `,
+    data() {
+        return {
+            product: "Pants",
+            brand: 'Rubchinsky',
+            description: "Cool pants",
+            selectedVariant: 0,
+            altText: "A pair of pants",
+            link: "https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=pants",
+            inventory: 100,
+            variants: [
+                {
+                    variantId: 2236,
+                    variantColor: 'black',
+                    variantImage: "./assets/vmPants-black-onWhite.jpg",
+                    variantQuantity: 100,
+                    onSale: true
+                },
+                {
+                    variantId: 2237,
+                    variantColor: 'white',
+                    variantImage: "./assets/vmPants-white-onWhite.jpg",
+                    variantQuantity: 1,
+                    onSale:  false
+                }
+            ],
+            sizes: ['L', 'XL', 'XXL', 'XXXL'],
+            reviews: []
+        }
+    },
+    methods: {
+        addToCart() {
+            this.$emit('add-to-cart',
+                this.variants[this.selectedVariant].variantId);
+        },
+        removeFromCart() {
+            this.$emit('remove-from-cart',
+                this.variants[this.selectedVariant].variantId);
         },
         updateProduct(index) {
             this.selectedVariant = index;
